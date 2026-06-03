@@ -6,6 +6,7 @@ class UrlInputField extends StatefulWidget {
   final TextEditingController controller;
   final Function(String) onChanged;
   final VoidCallback? onPaste;
+  final Function(String)? onSubmitted;
   final bool isLoading;
 
   const UrlInputField({
@@ -13,6 +14,7 @@ class UrlInputField extends StatefulWidget {
     required this.controller,
     required this.onChanged,
     this.onPaste,
+    this.onSubmitted,
     this.isLoading = false,
   });
 
@@ -87,6 +89,7 @@ class _UrlInputFieldState extends State<UrlInputField>
             controller: widget.controller,
             focusNode: _focusNode,
             onChanged: widget.onChanged,
+            onSubmitted: widget.onSubmitted,
             enabled: !widget.isLoading,
             style: const TextStyle(fontSize: 16),
             decoration: InputDecoration(

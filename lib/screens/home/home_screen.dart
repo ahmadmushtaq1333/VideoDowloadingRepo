@@ -136,6 +136,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               onPaste: () {
                 _extractVideoInfo(_urlController.text);
               },
+              onSubmitted: (value) {
+                _extractVideoInfo(value);
+              },
               isLoading: _isLoading,
             ),
             const SizedBox(height: 16),
@@ -151,8 +154,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             ),
 
             // Error Message
-            if (_errorMessage != null) ...[
-              const SizedBox(height: 16),
+            if (_errorMessage != null) ...[\n              const SizedBox(height: 16),
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
@@ -176,14 +178,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             ],
 
             // Loading State
-            if (_isLoading) ...[
-              const SizedBox(height: 24),
+            if (_isLoading) ...[\n              const SizedBox(height: 24),
               const SkeletonVideoCard(),
             ],
 
             // Video Preview
-            if (_videoInfo != null && !_isLoading) ...[
-              const SizedBox(height: 24),
+            if (_videoInfo != null && !_isLoading) ...[\n              const SizedBox(height: 24),
               VideoPreviewCard(videoInfo: _videoInfo!),
               const SizedBox(height: 24),
 
@@ -218,8 +218,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             ],
 
             // Initial State
-            if (_videoInfo == null && !_isLoading && _errorMessage == null) ...[
-              const SizedBox(height: 60),
+            if (_videoInfo == null && !_isLoading && _errorMessage == null) ...[\n              const SizedBox(height: 60),
               Center(
                 child: Column(
                   children: [
