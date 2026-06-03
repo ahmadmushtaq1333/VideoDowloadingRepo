@@ -7,8 +7,8 @@ import '../core/utils/url_parser.dart';
 class VideoExtractionService {
   final Dio _dio = Dio();
   
-  // Point to your backend server - UPDATE THIS WITH YOUR BACKEND URL
-  final String _backendUrl = 'https://your-backend.com/api/extract';
+  // Backend URL - Configure with your deployed server
+  final String _backendUrl = 'https://video-downloader-backend.railway.app/api/extract';
   
   Future<VideoInfo> extractVideoInfo(String url) async {
     // For Android/iOS, use backend API
