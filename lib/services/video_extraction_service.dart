@@ -7,26 +7,31 @@ import '../core/utils/url_parser.dart';
 class VideoExtractionService {
   final Dio _dio = Dio();
   
-  // Backend URL - Configure with your deployed server
+  // Backend URL - Must match your Railway deployment
   final String _backendUrl = 'https://video-downloader-backend.railway.app/api/extract';
   
   Future<VideoInfo> extractVideoInfo(String url) async {
-    // For Android/iOS, use backend API
+    // Android & iOS MUST use backend (no yt-dlp on mobile)
     if (Platform.isAndroid || Platform.isIOS) {
+      print('DEBUG: Platform is mobile - using backend API');
       return await extractWithBackend(url);
     }
     
-    // For desktop platforms, try yt-dlp first
+    // Desktop: try local yt-dlp first
+    print('DEBUG: Platform is desktop - trying local yt-dlp');
     try {
       return await extractWithYtDlp(url);
     } catch (e) {
-      // If yt-dlp fails on desktop, fall back to backend
+      print('DEBUG: yt-dlp failed, falling back to backend');
       return await extractWithBackend(url);
     }
   }
   
   Future<VideoInfo> extractWithBackend(String url) async {
     try {
+      print('DEBUG: Calling backend API: $_backendUrl');
+      print('DEBUG: URL parameter: $url');
+      
       final response = await _dio.post(
         _backendUrl,
         data: {'url': url},
@@ -37,11 +42,16 @@ class VideoExtractionService {
         ),
       );
       
+      print('DEBUG: Backend response status: ${response.statusCode}');
+      
       if (response.statusCode != 200) {
+        print('DEBUG: Backend error status: ${response.statusCode}');
         throw Exception('Backend error: ${response.statusMessage}');
       }
       
       final json = response.data as Map<String, dynamic>;
+      print('DEBUG: Backend returned title: ${json['title']}');
+      
       final qualities = _parseQualities(json);
       
       return VideoInfo(
@@ -57,13 +67,14 @@ class VideoExtractionService {
         availableFormats: List<String>.from(json['formats'] ?? ['mp4', 'mkv', 'webm', 'mp3']),
       );
     } catch (e) {
-      throw Exception('Failed to extract video: $e');
+      print('DEBUG: Backend extraction failed: $e');
+      throw Exception('Backend error: $e');
     }
   }
   
   Future<VideoInfo> extractWithYtDlp(String url) async {
     try {
-      // Call yt-dlp to get video info
+      print('DEBUG: Calling local yt-dlp');
       final result = await Process.run(
         'yt-dlp',
         [
@@ -95,6 +106,7 @@ class VideoExtractionService {
         availableFormats: ['mp4', 'mkv', 'webm', 'mp3'],
       );
     } catch (e) {
+      print('DEBUG: yt-dlp error: $e');
       throw Exception('yt-dlp error: $e');
     }
   }
