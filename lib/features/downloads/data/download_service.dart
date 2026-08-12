@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 import 'package:path_provider/path_provider.dart';
-import 'package:video_downloader/models/download_task.dart';
+import 'package:video_downloader/features/downloads/domain/download_task.dart';
 
 class DownloadService {
   final Map<String, Process> _processes = {};
@@ -136,7 +136,6 @@ class DownloadService {
     DownloadTask task,
     StreamController<DownloadTask> controller,
   ) {
-    // [download]  45.2% of 100.00MiB at 5.00MiB/s ETA 00:11
     final regex = RegExp(
       r'\[download\]\s+([\d.]+)%\s+of\s+~?\s*[\d.]+\S+\s+at\s+[\d.]+\S+(?:\s+ETA\s+(\S+))?',
     );
@@ -209,20 +208,17 @@ class DownloadService {
 
   Future<Directory> _getDownloadDirectory() async {
     if (Platform.isAndroid) {
-      // For Android, use external storage
       final directory = await getExternalStorageDirectory();
       return directory ?? await getApplicationDocumentsDirectory();
     } else if (Platform.isIOS) {
       return getApplicationDocumentsDirectory();
     } else {
-      // For desktop platforms
       final downloadsDir = await getDownloadsDirectory();
       return downloadsDir ?? await getApplicationDocumentsDirectory();
     }
   }
 
   String _sanitizeFileName(String fileName) {
-    // Remove invalid characters from file name
     final sanitized = fileName
         .replaceAll(RegExp(r'[<>:"/\\|?*]'), '')
         .replaceAll(RegExp(r'\s+'), '_');

@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:video_downloader/models/download_history.dart';
-import 'package:video_downloader/models/download_task.dart';
+import 'package:video_downloader/features/downloads/domain/download_history.dart';
+import 'package:video_downloader/features/downloads/domain/download_task.dart';
 import 'package:video_downloader/features/downloads/data/download_service.dart';
 import 'package:video_downloader/services/storage_service.dart';
 import 'package:video_downloader/providers/storage_provider.dart';
