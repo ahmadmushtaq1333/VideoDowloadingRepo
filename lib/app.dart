@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'core/theme/app_theme.dart';
-import 'screens/home/home_screen.dart';
-import 'screens/downloads/downloads_screen.dart';
-import 'screens/history/history_screen.dart';
-import 'screens/settings/settings_screen.dart';
+import 'package:video_downloader/core/core.dart';
+import 'package:video_downloader/features/home/features_home.dart';
+import 'package:video_downloader/features/downloads/features_downloads.dart';
+import 'package:video_downloader/features/history/features_history.dart';
+import 'package:video_downloader/features/settings/features_settings.dart';
 import 'navigation/bottom_nav_bar.dart';
 import 'navigation/side_nav_rail.dart';
-import 'widgets/responsive_layout.dart';
+import 'package:video_downloader/shared/ui/widgets.dart';
 
 class App extends ConsumerStatefulWidget {
   const App({super.key});
